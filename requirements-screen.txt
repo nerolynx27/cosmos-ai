@@ -1,0 +1,2 @@
+# Optional: JPEG decoding for screen questions and check-see.py.
+Pillow

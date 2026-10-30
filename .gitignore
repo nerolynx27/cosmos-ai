@@ -1,0 +1,39 @@
+# Local development records and generated evidence
+/.local/
+/runtime/
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+node_modules/
+.env
+.env.*
+!.env.example
+*.log
+*.pid
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Generated graph exports contain library content and absolute local paths.
+/viewer/graph-data.js
+/viewer/graph-data.tmp
+
+# Model files are downloaded/managed separately by llama.cpp.
+*.gguf
+*.ggml
+*.safetensors
+
+# Local preview prototypes; use the actual viewer and regression suites.
+/viewer/toggle-preview.html
+/viewer/voice-orb-preview.html
+/serve-toggle-preview.cjs
+/check-toggle-preview.cjs
+
+# All library content stays local; the public package starts empty.
+/notes/
+
+# Generated Graphify indexes and local scrape cache
+/graphify-out/
+/.firecrawl/

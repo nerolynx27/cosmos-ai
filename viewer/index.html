@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<script>const FINISH_MS = 900;</script>
+<title>Cosmos — Your knowledge, connected</title>
+<link rel="icon" href="cosmos-logo.svg" type="image/svg+xml">
+<style>
+:root{color-scheme:dark;--bg:#000000;--panel:#000000;--line:#232c38;--text:#eef4f8;--muted:#9daeba;--accent:#b8f4d2;--library-width:252px;--rail:var(--library-width);font-family:"Segoe UI",system-ui,sans-serif;font-size:14px}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);overflow:hidden}button,input,select{font:inherit}button,select{cursor:pointer}button{color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 12px;transition:background .15s}button:hover:not(:disabled){background:#000000}button:disabled,input:disabled,select:disabled{opacity:.48;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:4px}input,select{color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;min-width:0}input{padding:11px 12px;caret-color:var(--accent)}input::placeholder{color:#a6b3c0}::selection{background:#35634d;color:#fff}*{scrollbar-width:thin;scrollbar-color:#354454 transparent}svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:middle}.muted{color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}[hidden]{display:none!important}
+header{height:82px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--line);background:#000000;position:relative;z-index:5;gap:20px}.brand{display:flex;align-items:center;gap:12px;min-width:196px}.brand img{width:38px;height:31px;object-fit:contain;flex-shrink:0}.brand strong{font-size:24px;letter-spacing:-.03em;font-weight:600}.brand span{font-size:12px;color:var(--muted);border-left:1px solid #394250;margin-left:4px;padding-left:15px}.model-controls{display:flex;align-items:center;gap:10px}.model-controls select{width:240px;padding:9px 30px 9px 12px}.primary{background:#AFCBFF;color:#000000;border-color:#AFCBFF;font-weight:600}.primary:hover:not(:disabled){background:#AFCBFF}.icon-button{padding:8px;min-width:38px;min-height:38px}.mobile-only{display:none}
+body.library-collapsed{--rail:48px}aside.library{position:absolute;top:82px;bottom:0;left:0;width:var(--rail);border-right:1px solid var(--line);background:#000000;z-index:4;overflow:hidden;transition:width .24s ease}.library-content{width:var(--library-width);height:100%;padding:24px 18px 18px;display:flex;flex-direction:column;transition:transform .24s ease}.library-collapsed .library-content{transform:translateX(-100%)}#library-toggle{position:absolute;right:5px;top:20px;z-index:1;border-color:#536677;background:#000000}#library-toggle:focus-visible{outline-offset:-3px}.library-collapsed #library-toggle svg{transform:rotate(180deg)}.library-title{margin:0 36px 18px 4px}.library-title h2{font-size:15px;font-weight:600;margin:0}.library-title span{display:block;margin-top:4px;font-size:12px;color:var(--muted)}.search{position:relative}.search input{width:100%;padding-left:36px;font-size:12px}.search svg{position:absolute;left:11px;top:11px;width:15px;color:var(--muted)}.groups{margin:25px 0 20px}.group{width:100%;display:flex;align-items:center;gap:10px;padding:9px 10px;border:0;text-align:left;font-size:13px}.group.active{background:#000000;font-weight:600}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;flex-shrink:0}.group .count{margin-left:auto;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}.list-heading{font-size:12px;color:var(--muted);margin:0 10px 12px;display:flex;justify-content:space-between}.notes{overflow:auto;flex:1;min-height:70px}.note-row{display:flex;align-items:center;gap:9px;text-align:left;border:0;width:100%;font-size:12px;padding:10px;line-height:1.4}.note-row.selected{background:#000000;color:#d9ffeb}
+main{position:absolute;left:var(--rail);right:0;top:82px;bottom:0;overflow:hidden;transition:left .24s ease,top .24s ease}#graph{position:absolute;inset:0}#graph canvas{display:block}.graph-tools{position:absolute;right:23px;top:26px;display:flex;gap:7px}.graph-tools button{background:#000000}.graph-meta{position:absolute;right:25px;top:79px;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}.hint{position:absolute;left:34px;bottom:150px;font-size:12px;color:#8c9daa;pointer-events:none}.graph-error{position:absolute;left:34px;right:34px;top:185px;background:#000000;color:#ffd6b1;padding:16px;border-radius:10px;line-height:1.6}
+.detail{position:absolute;right:24px;top:115px;width:320px;max-height:calc(100% - 330px);padding:23px;background:#000000;border:1px solid #344152;border-radius:12px;overflow:auto;z-index:4;}.detail .close{float:right;margin:-8px -8px 8px 10px}.detail .group-label{font-size:12px;display:flex;align-items:center;gap:8px;margin:0 0 14px}.detail h2{font-size:23px;line-height:1.2;font-weight:500;letter-spacing:-.02em;margin:0 0 16px}.excerpt{font-size:13px;line-height:1.8;color:#c0cfdb;white-space:pre-wrap;overflow-wrap:anywhere}.detail h3{font-size:12px;color:var(--muted);font-weight:500;margin:22px 0 8px}.neighbours{display:flex;gap:6px;flex-wrap:wrap}.neighbours button{font-size:12px;padding:6px 8px;text-align:left}.detail .ask-note{width:100%;margin-top:20px;font-size:12px}
+.chat{position:absolute;bottom:21px;left:34px;right:34px;z-index:3;margin:auto}.conversation{margin-bottom:10px}.transcript{max-height:min(36vh,340px);overflow:auto;background:#000000;border:1px solid #344152;border-radius:12px;padding:18px 20px;}.transcript-head{position:sticky;top:-18px;background:#000000;z-index:1;display:flex;justify-content:space-between;align-items:center;margin:-18px -20px 12px;padding:18px 20px 10px;font-size:12px;color:var(--muted);gap:8px}.message{font-size:13px;line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 14px}.message.question{color:var(--muted);font-size:12px;border-bottom:1px solid var(--line);padding-bottom:12px}.source-list{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}.source-list button{padding:4px 8px;border-color:#415664;font-size:12px;display:flex;align-items:center;gap:6px}.composer{background:#000000;border:1px solid #3d5060;border-radius:12px;padding:14px 16px;}.input-row{display:flex;gap:10px;align-items:center}.input-row input{border:0;background:var(--bg);padding:7px 0;outline-offset:2px;flex:1;width:100%;font-size:14px}.send{border:0;border-radius:7px;padding:9px;flex-shrink:0}.model-notice{margin:0 0 10px;padding:12px 14px;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--muted);font-size:12px;line-height:1.6;max-height:25vh;overflow:auto;overflow-wrap:anywhere}.model-notice.error{color:#ffb8a7}.suggestions{display:flex;gap:8px;margin:0 0 12px;flex-wrap:wrap}.suggestions button{font-size:12px;background:#000000;border-color:#303c49;padding:8px 11px}.empty{padding:15px 10px;color:var(--muted);font-size:12px}.loading-answer{color:var(--accent)}
+main{isolation:isolate;background:#000}#cosmos-background{position:absolute;inset:0;z-index:0;pointer-events:none}#cosmos-background canvas{display:block}#graph{z-index:1}.graph-tools,.graph-meta,.hint,.graph-error{z-index:2}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(min-width:1500px){.chat{bottom:28px}.hint{bottom:159px}}
+@media(max-width:1000px){:root{--library-width:216px}header{padding:0 18px}.brand{min-width:180px}.brand span{display:none}.model-controls{gap:7px}.model-controls select{width:215px}.chat{left:24px;right:24px}.detail{width:285px}.hint{left:24px}}
+@media(max-width:720px){
+ :root{--library-width:252px;--mobile-library-height:min(360px,45dvh)}body{overflow-y:auto;min-height:calc(125px + var(--mobile-library-height) + 480px)}body.library-collapsed{--mobile-library-height:0px;min-height:100dvh}
+ .mobile-only{display:block}header{height:125px;padding:13px 16px;align-items:flex-start;flex-wrap:wrap;gap:10px}.brand{min-width:0;gap:9px}.brand strong{font-size:21px}.brand img{width:32px;height:26px}.model-controls{width:100%;order:3;gap:7px}.model-controls select{width:0;flex:1;font-size:12px}.model-controls button{font-size:12px;padding:9px}.model-controls .stop{padding:8px}
+ aside.library{top:125px;bottom:auto;width:100%;height:var(--mobile-library-height);border-right:0;border-bottom:1px solid var(--line);transition:height .24s ease,width .24s ease}.library-content{width:100%;padding:14px;overflow:auto}.library-title{margin-bottom:10px}.groups{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:10px 0}.group{padding:6px;gap:6px;font-size:12px}.list-heading{margin-bottom:6px}.notes{flex-shrink:0}.library-collapsed aside.library{width:48px;height:calc(100dvh - 125px);border-right:1px solid var(--line);border-bottom:0}.library-collapsed .library-content{width:252px}#library-toggle{top:14px}
+ main{top:calc(125px + var(--mobile-library-height));left:0;min-height:480px}.library-collapsed main{left:48px}.graph-tools{right:14px;top:22px;flex-direction:column}.graph-tools button{padding:7px}.graph-meta{top:118px;right:14px;font-size:11px;max-width:94px;text-align:right}.hint{left:14px;right:14px;bottom:190px;font-size:11px}.chat{left:14px;right:14px;bottom:13px}.suggestions{gap:6px}.suggestions button{font-size:11px;padding:7px 9px}.composer{padding:12px}.input-row input{font-size:13px}.detail{right:14px;left:14px;width:auto;top:154px;max-height:calc(100% - 360px);min-height:140px;padding:18px}.detail h2{font-size:20px}.transcript{max-height:32vh;padding:14px}.transcript-head{top:-14px;margin:-14px -14px 12px;padding:14px 14px 10px}.graph-error{left:18px;right:18px;top:175px}
+}
+@media(max-height:650px){.hint{display:none}.detail{top:100px;max-height:calc(100% - 290px)}.suggestions{display:none}.transcript{max-height:27vh}.library-content{padding-top:14px}.groups{margin:10px 0}.group{padding:6px 10px}}
+/* Your library: native controls using the supplied Eclipse design. */
+.library-content{overflow-y:auto;overflow-x:hidden}.library-content>*{flex-shrink:0}.notes{overflow:visible;flex:0 0 auto;min-height:70px}.groups{display:block;margin:14px 0 22px}.list-heading{text-transform:uppercase;gap:8px;overflow-wrap:anywhere}.note-row{overflow-wrap:anywhere}.library-location{margin:12px 4px 0;color:#8999ab;font-size:10px;letter-spacing:.02em}.library-status{margin:6px 4px 0;color:#afcbff;font-size:12px;line-height:1.6;overflow-wrap:anywhere}.library-status:empty{display:none}.library-status.error{color:#ffb8a7}
+.constellation-row{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto;align-items:center;gap:3px;padding:3px 0;border-radius:8px;background:#000}.constellation-row.active{box-shadow:inset 2px 0 #afcbff}.constellation-row .count{font-size:11px;color:#b3bcc8;font-variant-numeric:tabular-nums;padding:0 2px}.constellation-select{border:0;border-radius:4px;display:flex;align-items:center;gap:8px;text-align:left;padding:8px 2px;min-width:0;font-size:12px;line-height:1.5}.constellation-select span:last-child{overflow-wrap:anywhere}.constellation-select[aria-pressed=true]{font-weight:600;color:#fff}.constellation-toggle{border:0;padding:0;width:24px;height:28px;display:grid;place-items:center}.constellation-toggle svg{width:13px;height:13px;transition:transform .2s}.constellation-toggle[aria-expanded=true] svg{transform:rotate(90deg)}.constellation-children{margin-left:8px;padding-left:3px;border-left:1px solid #202733}.constellation-actions{position:relative;display:flex;gap:2px;justify-content:flex-end}.mini-action{border:0;display:grid;place-items:center;padding:0;width:28px;height:28px;border-radius:50%;color:#afcbff}.mini-action svg{width:14px;height:14px}.mini-action:hover:not(:disabled),.mini-action:focus-visible{box-shadow:0 0 12px #afcbff33}.mini-action:focus-visible,.constellation-toggle:focus-visible,.constellation-select:focus-visible{outline:2px solid #afcbff;outline-offset:0}.library-action{display:flex}.library-tooltip{display:none;position:absolute;z-index:6;right:0;bottom:calc(100% + 6px);background:#000;border:1px solid #444;border-radius:5px;padding:6px 9px;font-size:11px;line-height:1.5;width:max-content;max-width:155px;overflow-wrap:anywhere;pointer-events:none}.library-action:hover .library-tooltip,.library-action:focus-within .library-tooltip{display:block}
+.cosmos-eclipse{--eclipse-accent:#afcbff;position:relative;width:100%;max-width:260px;height:148px;margin-inline:auto;display:grid;place-items:center}.cosmos-eclipse button{cursor:pointer}.cosmos-eclipse button:focus-visible{outline:2px solid var(--eclipse-accent);outline-offset:5px}.cosmos-eclipse__core{position:relative;z-index:2;display:grid;place-items:center;width:70px;height:70px;border:0;border-radius:50%;background:#000;color:var(--eclipse-accent);font-size:25px;box-shadow:3px -2px 0 2px var(--eclipse-accent),0 0 22px #afcbff33;animation:cosmos-eclipse-glow 5s ease-in-out infinite;transition:transform 350ms ease}.cosmos-eclipse[data-open=true] .cosmos-eclipse__core{transform:translateY(-24px)}.cosmos-eclipse__satellite{position:absolute;display:grid;place-items:center;width:44px;height:44px;padding:0;border:1px solid #444;border-radius:50%;background:#000;color:var(--eclipse-accent);opacity:0;visibility:hidden;pointer-events:none;transform:scale(.4);transition:opacity 250ms ease,transform 350ms ease,visibility 250ms}.cosmos-eclipse__satellite svg{width:18px;height:18px}.cosmos-eclipse__folder{left:16px;bottom:28px}.cosmos-eclipse__star{right:16px;bottom:28px}.cosmos-eclipse[data-open=true] .cosmos-eclipse__satellite{opacity:1;visibility:visible;pointer-events:auto;transform:scale(1)}.cosmos-eclipse__label{position:absolute;top:calc(100% + 7px);color:#ddd;font-size:11px;white-space:nowrap}.cosmos-eclipse__hint{position:absolute;bottom:3px;color:#bbb;font-size:12px}.cosmos-eclipse__satellite:hover{border-color:var(--eclipse-accent);box-shadow:0 0 16px #afcbff33}
+@keyframes cosmos-eclipse-glow{50%{box-shadow:-3px 2px 0 2px var(--eclipse-accent),0 0 28px #afcbff44}}
+@keyframes cosmos-star-glimmer{50%{filter:brightness(1.7);text-shadow:0 0 12px #afcbff}}
+.star-glimmer{animation:cosmos-star-glimmer 800ms ease-out}
+#library-dialog{width:440px;max-width:calc(100vw - 28px);max-height:calc(100dvh - 28px);padding:26px;color:#eef4f8;background:#000;border:1px solid #394555;border-radius:16px;overflow:auto;box-shadow:0 24px 100px #0009}#library-dialog::backdrop{background:#000b}#library-dialog h2{font-size:22px;font-weight:500;margin:0 0 10px}#library-dialog-description{color:#aab7c5;font-size:13px;line-height:1.6;margin:0 0 24px}.library-field{display:flex;flex-direction:column;gap:9px;font-size:13px;margin:0 0 20px}.library-field select{padding:10px;width:100%}.library-field input{width:100%}.color-field{border:0;padding:0;margin:0 0 22px;min-width:0}.color-field legend{padding:0;margin-bottom:14px;font-size:13px}#color-presets{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:18px}.color-preset{width:36px;height:36px;padding:0;border-radius:50%;display:grid;place-items:center;border:1px solid #ffffff33}.color-preset .dot{width:20px;height:20px}.color-preset[aria-pressed=true]{outline:2px solid #fff;outline-offset:3px}.custom-color{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:13px;color:#ddd}.custom-color input{height:36px;width:48px;padding:3px;border-radius:4px;cursor:pointer}#color-value{font-size:12px;font-variant-numeric:tabular-nums;color:#b5c1cf}.library-dialog-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}.library-dialog-actions button{min-height:44px;min-width:80px}#library-form-error{color:#ffb8a7;font-size:13px;line-height:1.6;overflow-wrap:anywhere}#library-form-error:empty{display:none}#selected-files{padding-left:20px;max-height:150px;overflow:auto;line-height:1.8;overflow-wrap:anywhere;font-size:12px;color:#ddd}.upload-hint{font-size:12px;color:#aab7c5;margin-top:-8px}
+@media(min-width:721px) and (max-width:1000px){.constellation-actions{grid-column:2/-1}.cosmos-eclipse__folder{left:8px}.cosmos-eclipse__star{right:8px}}
+@media(pointer:coarse){.constellation-actions{grid-column:2/-1}.mini-action{width:44px;height:44px}.constellation-toggle{min-height:44px}.constellation-select{min-height:44px}}
+@media(max-width:720px){.groups{display:block}.cosmos-eclipse{height:148px}.constellation-row{grid-template-columns:28px minmax(0,1fr) auto auto}.constellation-children{margin-left:8px}#library-dialog{padding:22px}}
+@media(prefers-reduced-motion:reduce){.cosmos-eclipse__core,.star-glimmer{animation:none}.cosmos-eclipse__satellite{transition:none}}
+.constellation-children .constellation-children .constellation-children{margin-left:0;padding-left:0;border-left:0}
+.voice-info{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:8px;color:var(--muted);font-size:11px;line-height:1.5}.voice-info p{margin:0}#voice-status{color:var(--accent)}#microphone{flex-shrink:0;min-width:44px;min-height:44px}#microphone[aria-pressed=true]{border-color:var(--accent);color:var(--accent)}
+.workspace-toggles{position:relative;display:flex;align-items:center;padding:7px 10px;border:1px solid #2a3643;border-radius:7px}.workspace-toggles::before{content:"";position:absolute;left:30px;right:30px;top:17px;height:1px;background:linear-gradient(90deg,#afcbff,#b8f4d2,#ef88d5)}.workspace-toggle{position:relative;display:grid;place-items:center;min-width:98px;height:36px;padding:16px 6px 0;border:0;background:transparent;color:#dbe6ef}.workspace-toggle:hover:not(:disabled){background:transparent}.workspace-toggle::before{content:"";position:absolute;top:4px;width:9px;height:9px;border-radius:50%;background:#fff;box-shadow:0 0 11px 3px currentColor}.workspace-toggle:first-child::before{color:#afcbff}.workspace-toggle:last-child::before{color:#ef88d5}.workspace-toggle[aria-pressed=false]{color:#6f7d8b}.workspace-toggle[aria-pressed=false]::before{background:#28323d;box-shadow:none}.workspace-toggle__label{font-size:10px}.workspace-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}.workspace-hidden{display:none!important}
+.model-picker{display:flex;flex-direction:column;gap:3px;min-width:0}#vision-status{font-size:10px;color:var(--muted)}.screen-controls{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px;font-size:12px}.screen-controls button{min-height:40px}.screen-controls p{flex-basis:100%;margin:0;color:var(--muted);font-size:11px;line-height:1.5}#screen-status{color:var(--muted)}#screen-status.sharing{color:#b8f4d2;font-weight:600}#screen-status.sharing::before{content:'●';margin-right:6px}#stop-sharing{border-color:#b8f4d2}#screen-help.error{color:#ffb8a7}@media(max-width:720px){.model-picker{flex:1}.model-controls .model-picker select{width:100%;flex:auto}}
+@media(min-width:721px) and (max-width:1000px){.cosmos-eclipse__core{width:60px;height:60px}.cosmos-eclipse__label{font-size:10px}.constellation-children .constellation-actions{grid-column:2/-1}}
+@media(min-width:721px) and (max-width:800px){header{gap:7px}.brand{min-width:38px}.brand strong{display:none}}
+@media(max-width:720px){.workspace-toggles{position:absolute;right:54px;top:10px;padding:3px 5px}.workspace-toggles::before{left:21px;right:21px;top:11px}.model-controls .workspace-toggle{min-width:35px;width:35px;height:31px;padding:0}.workspace-toggle__label{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><img src="cosmos-logo.svg" alt="Cosmos" width="38" height="31"><strong>Cosmos</strong><span>YOUR KNOWLEDGE, CONNECTED</span></div>
+ <button class="mobile-only icon-button" id="library-menu" type="button" aria-label="Expand library" aria-expanded="false" aria-controls="library-content"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+ <div class="model-controls"><div id="workspace-toggles" class="workspace-toggles" aria-label="Workspace visibility"><button id="conversation-toggle" class="workspace-toggle" type="button" aria-label="Hide conversation" aria-pressed="true" aria-controls="conversation"><span class="workspace-toggle__label">Conversation</span></button><button id="composer-toggle" class="workspace-toggle" type="button" aria-label="Hide typing box" aria-pressed="true" aria-controls="composer-panel"><span class="workspace-toggle__label">Typing</span></button></div><div class="model-picker"><label class="sr-only" for="model">Local model profile</label><select id="model" aria-describedby="model-message vision-status" disabled><option>Loading profiles…</option></select><span id="vision-status" role="status">Screen analysis: untested</span></div><button id="start-model" class="primary" disabled>Start model</button><button id="stop-model" class="icon-button stop" title="Stop local model" aria-label="Stop local model" disabled><svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2"/></svg></button></div>
+</header>
+<aside class="library" id="library" aria-label="Star library">
+ <button id="library-toggle" class="icon-button" type="button" aria-label="Collapse library" aria-expanded="true" aria-controls="library-content" title="Collapse library"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg></button>
+ <div id="library-content" class="library-content">
+ <div class="library-title"><h2>Your library</h2><span id="note-count"></span></div>
+ <div class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><label class="sr-only" for="search">Find a star</label><input id="search" placeholder="Find a star..." type="search"></div>
+ <div class="cosmos-eclipse" id="eclipse" data-open="false">
+  <button type="button" class="cosmos-eclipse__core" id="eclipse-core" aria-label="Add to your library" aria-expanded="false" aria-controls="eclipse-folder eclipse-star"><span aria-hidden="true">✦</span></button>
+  <button type="button" class="cosmos-eclipse__satellite cosmos-eclipse__folder" id="eclipse-folder" aria-label="Add constellation" disabled><span class="cosmos-eclipse__label">Constellation</span></button>
+  <button type="button" class="cosmos-eclipse__satellite cosmos-eclipse__star" id="eclipse-star" aria-label="Add star" disabled><span class="cosmos-eclipse__label">Star</span></button>
+  <span class="cosmos-eclipse__hint" id="eclipse-hint">Add to your universe</span>
+ </div>
+ <p id="library-location" class="library-location">Connecting library…</p>
+ <p id="library-status" class="library-status" role="status" aria-live="polite"></p>
+ <nav class="groups" id="groups" aria-label="Constellations"></nav>
+ <div class="list-heading"><span id="list-title">All stars</span><span id="list-count"></span></div>
+ <div class="notes" id="notes"></div>
+ </div>
+</aside>
+<main>
+ <div id="cosmos-background" aria-hidden="true"></div>
+ <div id="graph" role="img" aria-label="Interactive three-dimensional graph of stars. Use the star library for keyboard navigation."></div>
+ <div class="graph-tools"><button id="reset-view" class="icon-button" aria-label="Fit all stars in view" title="Fit all stars"><svg viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/><circle cx="12" cy="12" r="3"/></svg></button><button id="rotation" class="icon-button" aria-label="Pause galaxy rotation" title="Pause rotation"><svg viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg></button></div>
+ <div id="graph-meta" class="graph-meta"></div>
+ <div class="hint">Drag to orbit · Scroll to explore · Select a star to read</div>
+ <div id="graph-error" class="graph-error" role="alert" hidden></div>
+ <section class="detail" id="detail" aria-labelledby="detail-title" hidden><button id="close-detail" class="close icon-button" aria-label="Close star"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></svg></button><div id="detail-group" class="group-label"></div><h2 id="detail-title"></h2><div id="excerpt" class="excerpt"></div><h3 id="neighbour-title">Connected stars</h3><div id="neighbours" class="neighbours"></div><button id="ask-note" class="ask-note">Ask Cosmos about this star</button></section>
+ <section class="chat" aria-label="Ask your knowledge library">
+  <p id="model-message" class="model-notice" role="status">Connecting to Cosmos…</p>
+  <div id="conversation" class="conversation" aria-hidden="false">
+   <div id="transcript" class="transcript" role="log" aria-live="polite"><div class="transcript-head"><span>Conversation · grounded in your stars</span></div><div id="messages"><p id="initial-answer" class="message">Loading your notes…</p></div></div>
+  </div>
+  <div id="composer-panel" aria-hidden="false"><div id="suggestions" class="suggestions"></div>
+  <form id="chat-form" class="composer"><div class="screen-controls"><button id="share-screen" type="button">Share screen</button><span id="screen-status" role="status">Screen not shared</span><button id="stop-sharing" type="button" hidden>Stop Sharing</button><button id="screen-chat" type="button" hidden>Return to chat</button><p id="screen-help" role="status">Local screen analysis · one fresh frame per question.</p></div><div class="input-row"><label for="question" class="sr-only">Ask a question</label><input id="question" maxlength="4000" placeholder="Ask anything about your stars…" autocomplete="off" disabled><button id="microphone" type="button" class="icon-button" aria-label="Start listening" aria-keyshortcuts="Shift+ArrowUp" aria-describedby="voice-help voice-message" aria-pressed="false" title="Start listening (Shift + ArrowUp)"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="2" width="6" height="13" rx="3"/><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8"/></svg></button><button id="send" class="send primary" aria-label="Send question" disabled><svg viewBox="0 0 24 24"><path d="M12 19V5m-6 6 6-6 6 6"/></svg></button></div><div class="voice-info"><span id="voice-status" role="status">idle</span><span id="voice-help">Mic or Shift + ↑ · Press, release, speak</span><p id="voice-message" role="status"></p></div></form></div>
+ </section>
+</main>
+<dialog id="library-dialog" aria-labelledby="library-dialog-title" aria-describedby="library-dialog-description">
+ <form id="library-form">
+  <h2 id="library-dialog-title">Add constellation</h2>
+  <p id="library-dialog-description"></p>
+  <div id="folder-fields">
+   <label class="library-field" for="folder-name">Folder name<input id="folder-name" name="name" maxlength="255" autocomplete="off" required></label>
+   <div class="library-field"><label for="folder-parent">Parent constellation</label><select id="folder-parent" name="parent"></select></div>
+   <fieldset class="color-field"><legend>Constellation color</legend><div id="color-presets"></div><label class="custom-color">Custom color <input type="color" id="custom-color" value="#E3B478"><span id="color-value">#E3B478</span></label></fieldset>
+  </div>
+  <div id="star-fields" hidden>
+   <div class="library-field"><label for="star-target">Target constellation</label><select id="star-target" name="target"></select></div>
+   <label class="library-field" for="star-files">Choose files<input type="file" id="star-files" multiple></label>
+   <p class="upload-hint">Any file type · Up to 128 MB per batch</p><ul id="selected-files" aria-live="polite" aria-label="Selected files"></ul>
+  </div>
+  <p id="library-form-error" role="alert"></p>
+  <div class="library-dialog-actions"><button type="button" id="library-cancel">Cancel</button><button type="submit" class="primary" id="library-submit">Create</button></div>
+ </form>
+</dialog>
+<script src="graph-data.js"></script>
+<script src="library.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.1/build/three.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/3d-force-graph@1.79.0/dist/3d-force-graph.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+const data = typeof GRAPH === 'undefined' ? {nodes:[],links:[]} : GRAPH;
+data.nodes.forEach(node=>{node.constellationId??=node.group;node.name??=node.label});
+const palette=['#dfb37e','#9eb4ff','#67d7b3','#6fc6ee','#d496dc','#ed927f'];
+const groups=[...new Set(data.nodes.map(n=>n.group))].sort();
+let constellations=data.constellations||groups.map((name,i)=>({id:name,parentId:null,name,color:palette[i%palette.length]}));
+const colors=new Map(constellations.map(c=>[c.id,c.color]));
+const adjacent=new Map(data.nodes.map(n=>[n.id,new Set()]));
+data.links.forEach(l=>{adjacent.get(l.source)?.add(l.target);adjacent.get(l.target)?.add(l.source)});
+const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');
+let activeGroup=null,selected=null,highlighted=new Set(),sources=new Set(),graph=null,cosmos=null,modelState=null,busy=false,selecting=false,rotation=!reducedMotion.matches;
+let lastProfile=null,loadingSince=null,hover=null;
+let clicked=false,speaking=false,utterance=null,recognition=null,listening=false,voiceTurn=null,speechRevision=0;
+let screenMode=false,displayStream=null,sharePending=false,screenRevision=0,screenRequest=null;
+const displayVideo=document.createElement('video');displayVideo.muted=true;displayVideo.playsInline=true;
+const SCREEN_ENDED='Screen sharing has ended. Start a new screen share before asking about your screen.';
+const VISION_REQUIRED='The selected local model does not support screen images. Select or configure a vision-capable llama.cpp model.';
+const speechQueue=[],chatQueue=[];
+function voiceStatus(){
+ $('voice-status').textContent=listening?'listening':busy?'thinking':speaking?'speaking':'idle';
+ $('microphone').disabled=screenMode||!!recognition||!!voiceTurn;
+ $('microphone').setAttribute('aria-pressed',String(listening));
+}
+function voiceMessage(text){$('voice-message').textContent=text}
+function speak(text,localOnly=false){
+ // Every speech path, including queued greetings and voice changes, passes this gate.
+ if(new URLSearchParams(location.search).get('mute')==='1'||!window.speechSynthesis||!window.SpeechSynthesisUtterance)return;
+ if(text)speechQueue.push({text,localOnly});
+ if(!clicked||recognition||voiceTurn||utterance||!speechQueue.length)return;
+ const item=speechQueue.shift(),next=new SpeechSynthesisUtterance(item.text);
+ const voices=window.speechSynthesis.getVoices().filter(v=>!item.localOnly||v.localService===true);
+ const voice=voices.find(v=>/^en[-_]GB$/i.test(v.lang))||voices.find(v=>/^en(?:[-_]|$)/i.test(v.lang))||(item.localOnly?voices[0]:null);
+ if(item.localOnly&&!voice){voiceMessage('No installed local voice is available. Read the screen answer below.');speak();return}
+ if(voice)next.voice=voice;
+ next.lang=voice?.lang||'en-GB';utterance=next;
+ next.onstart=()=>{if(utterance===next){speaking=true;voiceStatus()}};
+ const ended=()=>{if(utterance!==next)return;utterance=null;speaking=false;voiceStatus();speak()};
+ next.onend=ended;
+ next.onerror=()=>{if(utterance!==next)return;voiceMessage('Audio unavailable. You can read the answer below.');ended()};
+ try{window.speechSynthesis.speak(next)}catch(error){next.onerror()}
+}
+function stopSpeaking(){
+ speechRevision++;speechQueue.length=0;utterance=null;speaking=false;
+ window.speechSynthesis?.cancel();voiceStatus();
+}
+document.addEventListener('click',function unlockSpeech(event){
+ if(!event.isTrusted)return;
+ clicked=true;document.removeEventListener('click',unlockSpeech,true);speak();
+},true);
+window.speechSynthesis?.addEventListener('voiceschanged',()=>speak());
+if(typeof data.greeting==='string'){
+ const hour=new Date().getHours(),period=hour>=5&&hour<12?'morning':hour>=12&&hour<18?'afternoon':'evening';
+ $('initial-answer').textContent=data.greeting.replace('{time_of_day}',period).replace('{count}',data.nodes.length).replace('{notes}',data.nodes.length===1?'note':'notes');
+ speak($('initial-answer').textContent);
+}else $('initial-answer').textContent='Index unavailable. Restart Cosmos and reload to reconnect.';
+function cancelVoiceTurn(){
+ if(!voiceTurn)return;
+ clearTimeout(voiceTurn.timer);voiceTurn.done=true;voiceTurn=null;
+ recognition?.abort();voiceStatus();
+}
+function startListening(){
+ if(screenMode){voiceMessage('Type screen questions to keep them local; online dictation is disabled.');return}
+ if(recognition||voiceTurn)return;
+ if(!window.webkitSpeechRecognition){voiceMessage('Speech recognition unavailable. You can still type.');return}
+ if(!libraryConnected&&modelState?.state!=='ready'){voiceMessage('Connect Cosmos to capture a memory or ask a question.');return}
+ voiceMessage('');
+ let mic;
+ try{mic=new window.webkitSpeechRecognition()}catch(error){voiceMessage('Microphone unavailable. You can still type.');return}
+ const turn={phrases:new Map(),timer:null,done:false,speechActive:false,interim:false};
+ recognition=mic;voiceTurn=turn;
+ mic.lang='en-GB';mic.continuous=true;mic.interimResults=true;
+ const finish=()=>{
+  if(turn.done||(recognition===mic&&(turn.speechActive||turn.interim)))return;
+  const text=[...turn.phrases.values()].join(' ').trim();
+  if(!text)return;
+  cancelVoiceTurn();submitQuestion(text);
+ };
+ const resetFinish=()=>{clearTimeout(turn.timer);if(!turn.done)turn.timer=setTimeout(()=>{turn.timer=null;finish()},FINISH_MS)};
+ mic.onstart=()=>{if(turn.done)return;listening=true;voiceStatus()};
+ mic.onspeechstart=()=>{if(turn.done)return;turn.speechActive=true;clearTimeout(turn.timer);turn.timer=null};
+ mic.onspeechend=()=>{if(turn.done)return;turn.speechActive=false;resetFinish()};
+ mic.onresult=event=>{
+  if(turn.done)return;
+  const fresh=[],interim=[];
+  for(let i=0;i<event.results.length;i++){
+   const result=event.results[i],text=result[0].transcript.trim();
+   if(result.isFinal){if(!turn.phrases.has(i)){turn.phrases.set(i,text);fresh.push(text)}}
+   else if(text)interim.push(text);
+  }
+  turn.interim=interim.length>0;
+  // Only final phrases can be standalone commands: interim "wait" may grow into "wait for…".
+  const command=!turn.interim&&fresh.join(' ').match(/^(stop|wait)[.!?,;:]*$/i);
+  if(command){cancelVoiceTurn();chatQueue.length=0;stopSpeaking();submitQuestion(command[1].toLowerCase());return}
+  $('question').value=[...turn.phrases.values(),...interim].join(' ').trim();
+  resetFinish();
+ };
+ mic.onerror=event=>{
+  if(turn.done)return;
+  cancelVoiceTurn();listening=false;
+  voiceMessage(['not-allowed','service-not-allowed'].includes(event.error)?'Microphone permission denied. You can still type.':event.error==='no-speech'?'No speech heard. Try the mic again or type.':'Microphone unavailable. Try again or type.');
+  voiceStatus();
+ };
+ mic.onend=()=>{
+  if(recognition!==mic)return;
+  recognition=null;listening=false;
+  if(!turn.done){
+   turn.speechActive=false;turn.interim=false;
+   if(!turn.phrases.size){cancelVoiceTurn();voiceMessage('No speech heard. Try the mic again or type.')}
+   else if(!turn.timer)resetFinish();
+  }
+  voiceStatus();speak();
+ };
+ try{mic.start();voiceStatus()}catch(error){cancelVoiceTurn();recognition=null;listening=false;voiceMessage(error.name==='NotAllowedError'?'Microphone permission denied. You can still type.':'Microphone unavailable. Try again or type.');voiceStatus()}
+}
+$('microphone').onclick=startListening;
+document.addEventListener('keydown',event=>{
+ if(event.key!=='ArrowUp'||!event.shiftKey||event.ctrlKey||event.altKey||event.metaKey)return;
+ event.preventDefault();if(!event.repeat)startListening();
+});
+if(!window.webkitSpeechRecognition)voiceMessage('Speech recognition unavailable. You can still type.');
+function screenLive(stream=displayStream){const track=stream?.getVideoTracks()[0];return !!(stream&&stream===displayStream&&stream.active&&track?.readyState==='live')}
+function screenHelp(text,error=false){$('screen-help').textContent=text;$('screen-help').classList.toggle('error',error)}
+function screenControls(){
+ const active=screenLive();
+ $('share-screen').hidden=active;$('share-screen').disabled=sharePending||busy;
+ $('stop-sharing').hidden=!active;$('screen-chat').hidden=!screenMode||active||sharePending;$('screen-chat').disabled=busy;
+ $('screen-status').textContent=active?'Screen sharing':sharePending?'Choose a screen…':screenMode?'Screen sharing ended':'Screen not shared';
+ $('screen-status').classList.toggle('sharing',active);
+ const profile=modelState?.profiles.find(p=>p.id===$('model').value);
+ const capability=profile?.vision||($('model').value===modelState?.active_profile?modelState?.vision:'unknown');
+ $('vision-status').textContent=capability==='unsupported'?'Screen analysis unavailable':capability==='supported'?'Screen analysis: supported':'Screen analysis: untested';
+ $('vision-status').title=capability==='unsupported'?VISION_REQUIRED:'Capability is checked with a real local image request.';
+ if(screenMode){$('question').disabled=busy||sharePending;$('send').disabled=busy||sharePending;$('question').placeholder=active?'Ask about your shared screen…':'Start a new share to ask about your screen';$('send').setAttribute('aria-label','Ask about screen')}
+ else $('send').setAttribute('aria-label','Send question');
+ $('voice-help').textContent=screenMode?'Type screen questions · local voice replies only':'Mic or Shift + ↑ · Press, release, speak';
+ voiceStatus();
+}
+function stopSharing(){
+ const stream=displayStream;displayStream=null;screenRevision++;screenRequest?.abort();screenRequest=null;
+ displayVideo.pause();displayVideo.srcObject=null;stream?.getTracks().forEach(track=>track.stop());
+ if(screenMode){stopSpeaking();screenHelp(SCREEN_ENDED,true)}
+ controls();
+}
+$('stop-sharing').onclick=stopSharing;
+$('screen-chat').onclick=()=>{screenMode=false;screenHelp('Local screen analysis · one fresh frame per question.');voiceMessage('');controls()};
+$('share-screen').onclick=async()=>{
+ if(sharePending||displayStream||busy)return;
+ screenMode=true;sharePending=true;screenRevision++;cancelVoiceTurn();stopSpeaking();chatQueue.length=0;voiceMessage('');controls();
+ try{
+  if(!navigator.mediaDevices?.getDisplayMedia)throw Error('Screen sharing is unavailable in this browser. Use a supported desktop browser at the local Cosmos address.');
+  const stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:false});
+  displayStream=stream;sharePending=false;
+  const ended=()=>{if(displayStream===stream)stopSharing()};
+  stream.getVideoTracks()[0]?.addEventListener('ended',ended,{once:true});stream.addEventListener('inactive',ended,{once:true});
+  if(!screenLive())throw Error(SCREEN_ENDED);
+  displayVideo.srcObject=stream;controls();await displayVideo.play();
+  if(!screenLive(stream))throw Error(SCREEN_ENDED);
+  screenHelp('Screen questions stay local. Each Ask sends one new frame; nothing is captured between questions.');
+ }catch(error){stopSharing();screenHelp(error.name==='NotAllowedError'?'Screen sharing was cancelled or denied. Select Share screen to try again.':error.message,true)}
+ finally{sharePending=false;controls()}
+};
+window.addEventListener('pagehide',stopSharing);
+async function captureScreenFrame(){
+ const stream=displayStream,track=stream?.getVideoTracks()[0];
+ if(!screenLive(stream))throw Error(SCREEN_ENDED);
+ // A static display need not emit changed frames. Read the live video now, never a saved canvas.
+ if(track.muted||displayVideo.paused||displayVideo.readyState<2||!displayVideo.videoWidth||!displayVideo.videoHeight)throw Error('The current screen frame could not be captured. Ask again.');
+ const canvas=document.createElement('canvas');canvas.width=displayVideo.videoWidth;canvas.height=displayVideo.videoHeight;
+ try{
+  const context=canvas.getContext('2d');if(!context)throw Error('The current screen frame could not be captured.');
+  context.drawImage(displayVideo,0,0,canvas.width,canvas.height);
+  const capturedAt=new Date().toISOString(),image=canvas.toDataURL('image/jpeg',0.9);
+  if(!image.startsWith('data:image/jpeg;base64,'))throw Error('Screen capture did not produce a JPEG. Ask again.');
+  if(!screenLive(stream))throw Error(SCREEN_ENDED);
+  return {image,capturedAt};
+ }finally{canvas.width=canvas.height=0}
+}
+const objects=new Map();
+function dot(color){const el=document.createElement('span');el.className='dot';el.style.background=color;return el}
+function button(text,action){const el=document.createElement('button');el.type='button';el.textContent=text;el.addEventListener('click',action);return el}
+function status(text,error=false){$('model-message').textContent=text;$('model-message').hidden=!text;$('model-message').classList.toggle('error',error)}
+function refreshGraph(){
+ if(!graph)return;
+ for(const n of data.nodes){const obj=objects.get(n.id);if(!obj)continue;const focus=highlighted.size||sources.size;const chosen=highlighted.has(n.id)||sources.has(n.id);const dim=!inConstellation(n,activeGroup)||(focus&&!chosen);obj.children[0].material.opacity=dim?.14:.95;obj.children[1].material.opacity=dim?.05:(chosen?.9:.42);obj.children[2].visible=n.id===selected||n.id===hover||sources.has(n.id)||(!focus&&adjacent.get(n.id).size>=8);obj.scale.setScalar(n.id===selected?1.35:1);}
+ graph.linkColor('#FFFFFF').linkWidth(l=>highlighted.has(idOf(l.source))&&highlighted.has(idOf(l.target))?1.4:.45);
+}
+function idOf(node){return typeof node==='object'?node.id:node}
+function holdCamera(){
+ if(!graph)return;
+ const camera=graph.camera(),controls=graph.controls(),position=camera.position.clone(),target=controls.target.clone(),damping=controls.enableDamping;
+ // Flush residual orbit inertia, then restore the exact pose without a flight or fit.
+ controls.autoRotate=false;controls.enableDamping=false;controls.update();
+ camera.position.copy(position);controls.target.copy(target);controls.update();controls.enableDamping=damping;
+}
+function openNote(node){selected=node.id;highlighted=new Set([node.id,...adjacent.get(node.id)]);$('detail').hidden=false;$('detail-title').textContent=node.label;$('detail-group').replaceChildren(dot(starColor(node)),document.createTextNode(node.group));$('excerpt').textContent=node.excerpt||'This file is stored in your library. A text preview is not available for this file type.';$('neighbour-title').textContent=`${adjacent.get(node.id).size} connected stars`;$('neighbours').replaceChildren();adjacent.get(node.id).forEach(i=>{const neighbour=findStar(i);if(neighbour)$('neighbours').append(button(neighbour.label,()=>openNote(neighbour)))});drawLibrary();refreshGraph();
+ if(graph&&Number.isFinite(node.x)){holdCamera();const length=Math.hypot(node.x,node.y,node.z)||1;const distance=1+140/length;graph.cameraPosition({x:node.x*distance,y:node.y*distance,z:node.z*distance+50},node,rotation?1100:0)}
+ if(matchMedia('(max-width:720px)').matches)setLibrary(true);
+}
+function closeNote(){selected=null;highlighted.clear();$('detail').hidden=true;drawLibrary();refreshGraph();if(graph)graph.controls().autoRotate=rotation}
+function showAnswerSources(intent,ids){
+ // Intent is classified from the question, independently of retrieval/source count.
+ // General conversation must preserve the current view, lighting and open note.
+ holdCamera();
+ if(intent!=='notes')return;
+ sources=new Set(ids);highlighted.clear();selected=null;$('detail').hidden=true;
+ if(sources.size){
+  activeGroup=null; // Source evidence must remain visible across folder filters.
+  if(graph)graph.controls().autoRotate=false;
+  if(sources.size<4){openNote(findStar(ids[0]));return}
+  highlighted=new Set(sources); // Four or more sources: light the cluster, keep the camera.
+ }
+ drawLibrary();refreshGraph();
+}
+function labelSprite(text,color){const canvas=document.createElement('canvas');canvas.width=512;canvas.height=64;const ctx=canvas.getContext('2d');ctx.font='24px Segoe UI, sans-serif';ctx.fillStyle=color;ctx.textAlign='center';ctx.fillText(text.length>32?text.slice(0,30)+'…':text,256,38);const sprite=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(canvas),transparent:true,depthWrite:false}));sprite.scale.set(75,9.4,1);sprite.position.set(0,-10,0);return sprite}
+function updateCosmosMotion(){
+ if(!cosmos)return;
+ const {renderer,scene,camera,particles}=cosmos;
+ renderer.setAnimationLoop(rotation&&!reducedMotion.matches&&!document.hidden?()=>{
+  particles.rotation.y+=0.0005;
+  renderer.render(scene,camera);
+ }:null);
+ renderer.render(scene,camera);
+}
+try{
+ if(typeof THREE!=='undefined'){
+  const root=$('cosmos-background');
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+  const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(50,1,0.1,1000),particles=new THREE.Group();
+  // Share geometry, keeping the supplied 1,500 individual sphere meshes and visual settings.
+  const geometry=new THREE.SphereGeometry(1,8,6);
+  for(let i=0;i<1500;i++){
+   const phi=Math.acos(-1+(2*i)/1500),theta=Math.sqrt(1500*Math.PI)*phi;
+   const radius=9+(Math.random()-0.5)*4;
+   const scale=Math.random()*(0.01-0.005)+0.005;
+   const color=new THREE.Color().setHSL(Math.random()*0.1+0.05,0.8,0.6+Math.random()*0.3);
+   const particle=new THREE.Mesh(geometry,new THREE.MeshBasicMaterial({color,transparent:true,opacity:1}));
+   particle.position.set(radius*Math.cos(theta)*Math.sin(phi),radius*Math.cos(phi),radius*Math.sin(theta)*Math.sin(phi));
+   particle.scale.setScalar(scale);particles.add(particle);
+  }
+  camera.position.set(-10,1.5,10);camera.lookAt(0,0,0);scene.add(particles);
+  renderer.setClearColor('#000000');renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.toneMapping=THREE.ACESFilmicToneMapping;
+  root.append(renderer.domElement);cosmos={renderer,scene,camera,particles};
+  const resize=new ResizeObserver(()=>{
+   const width=Math.max(1,root.clientWidth),height=Math.max(1,root.clientHeight);
+   camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height);
+   renderer.render(scene,camera);
+  });
+  resize.observe(root);updateCosmosMotion();
+  document.addEventListener('visibilitychange',updateCosmosMotion);
+  window.addEventListener('pageshow',updateCosmosMotion);
+  window.addEventListener('pagehide',event=>{
+   renderer.setAnimationLoop(null);
+   if(event.persisted)return;
+   resize.disconnect();geometry.dispose();
+   particles.children.forEach(particle=>particle.material.dispose());renderer.dispose();cosmos=null;
+  });
+ }
+}catch(error){$('cosmos-background').replaceChildren()}
+try{
+ if(typeof ForceGraph3D==='undefined'||typeof THREE==='undefined')throw Error('The 3D library could not load from the CDN. Check your connection, then reload. Your stars are still available in the library.');
+ const root=$('graph');
+ graph=ForceGraph3D({controlType:'orbit',rendererConfig:{alpha:true,antialias:true}})(root).width(root.clientWidth).height(root.clientHeight).backgroundColor('rgba(0,0,0,0)').showNavInfo(false).nodeLabel(n=>{const label=document.createElement('span');label.textContent=n.label;return label}).nodeThreeObject(n=>{
+  if(objects.has(n.id))return objects.get(n.id);
+  const color=starColor(n);const group=new THREE.Group();
+  group.add(new THREE.Mesh(new THREE.SphereGeometry(1.9+Math.sqrt(adjacent.get(n.id).size)*.38,16,12),new THREE.MeshBasicMaterial({color,transparent:true})));
+  const c=document.createElement('canvas');c.width=c.height=64;const ctx=c.getContext('2d');const gradient=ctx.createRadialGradient(32,32,0,32,32,32);gradient.addColorStop(0,'#ffffff');gradient.addColorStop(.2,color);gradient.addColorStop(1,'transparent');ctx.fillStyle=gradient;ctx.fillRect(0,0,64,64);
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:new THREE.CanvasTexture(c),transparent:true,depthWrite:false,blending:THREE.AdditiveBlending}));glow.scale.set(25,25,1);group.add(glow,labelSprite(n.label,'#c3d8e5'));objects.set(n.id,group);return group;
+ }).linkOpacity(1).linkWidth(.45).linkColor('#FFFFFF').onNodeClick(openNote).onNodeHover(n=>{hover=n?.id??null;root.style.cursor=n?'pointer':'grab';refreshGraph()}).onBackgroundClick(closeNote).cooldownTicks(180);
+ data.nodes.forEach((n,i)=>{const group=groups.indexOf(n.group);const angle=group/groups.length*Math.PI*2;const offset=i*2.39996;n.x=Math.cos(angle)*125+Math.cos(offset)*55;n.y=Math.sin(angle)*100+Math.sin(offset)*48;n.z=Math.sin(offset*1.3)*85});
+ graph.graphData(data);graph.d3Force('charge').strength(-120);graph.d3Force('link').distance(70);graph.cameraPosition({x:0,y:30,z:640});graph.controls().autoRotate=rotation;graph.controls().autoRotateSpeed=.25;graph.controls().enableDamping=true;
+ new ResizeObserver(()=>{graph.width(root.clientWidth).height(root.clientHeight)}).observe(root);
+ let fitted=false;graph.onEngineStop(()=>{if(!fitted&&data.nodes.length){fitted=true;if(selected===null)graph.zoomToFit(rotation?1000:0,100)}});refreshGraph();
+}catch(error){$('graph-error').textContent=error.message;$('graph-error').hidden=false}
+$('note-count').textContent=`${data.nodes.length} stars`;$('graph-meta').textContent=`${data.nodes.length} stars / ${data.links.length} connections`;
+drawLibrary();$('search').addEventListener('input',drawLibrary);$('close-detail').onclick=closeNote;$('reset-view').onclick=()=>{closeNote();sources.clear();activeGroup=null;drawLibrary();refreshGraph();graph?.zoomToFit(rotation?900:0,90)};
+function setRotation(){if(graph)graph.controls().autoRotate=rotation&&selected===null;updateCosmosMotion();$('rotation').setAttribute('aria-label',rotation?'Pause galaxy rotation':'Resume galaxy rotation');$('rotation').title=rotation?'Pause rotation':'Resume rotation';$('rotation').innerHTML=rotation?'<svg viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></svg>':'<svg viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></svg>'}
+$('rotation').onclick=()=>{rotation=!rotation;setRotation()};setRotation();
+reducedMotion.addEventListener('change',()=>{rotation=!reducedMotion.matches;setRotation()});
+function setLibrary(collapsed){
+ const content=$('library-content'),toggle=$('library-toggle');
+ if(collapsed&&content.contains(document.activeElement))toggle.focus();
+ document.body.classList.toggle('library-collapsed',collapsed);content.inert=collapsed;content.setAttribute('aria-hidden',String(collapsed));
+ for(const control of [toggle,$('library-menu')]){control.setAttribute('aria-expanded',String(!collapsed));control.setAttribute('aria-label',collapsed?'Expand library':'Collapse library');control.title=collapsed?'Expand library':'Collapse library'}
+}
+$('library-menu').onclick=$('library-toggle').onclick=()=>setLibrary(!document.body.classList.contains('library-collapsed'));
+const mobile=matchMedia('(max-width:720px)');mobile.addEventListener('change',()=>setLibrary(mobile.matches));setLibrary(mobile.matches);
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('library-dialog').open){closeNote();setLibrary(true)}});
+function setWorkspacePanel(panel,visible){
+ const target=$(panel==='conversation'?'conversation':'composer-panel');
+ const toggle=$(panel+'-toggle');
+ target.classList.toggle('workspace-hidden',!visible);
+ target.inert=!visible;
+ target.setAttribute('aria-hidden',String(!visible));
+ toggle.setAttribute('aria-pressed',String(visible));
+ toggle.setAttribute('aria-label',`${visible?'Hide':'Show'} ${panel==='conversation'?'conversation':'typing box'}`);
+}
+async function api(path,body,options={}){const response=await fetch(path,{method:body?'POST':'GET',headers:body?{'Content-Type':'application/json',...options.headers}:{},body:body?JSON.stringify(body):undefined,signal:options.signal||(path==='/remember'?AbortSignal.timeout(30000):undefined)});const result=await response.json();if(!response.ok)throw Error(result.error||'Cosmos could not complete the request.');return result}
+function controls(){const loading=['starting','switching'].includes(modelState?.state);const ready=modelState?.state==='ready'&&!busy&&!selecting;const writable=!busy&&(libraryConnected||ready);$('question').disabled=!writable;$('send').disabled=!writable;$('model').disabled=loading||busy||selecting||!modelState;$('start-model').disabled=loading||busy||selecting||!modelState;$('stop-model').disabled=!modelState||!['ready','failed'].includes(modelState.state)||busy||selecting;$('start-model').textContent=loading?'Loading…':modelState?.state==='ready'?($('model').value===modelState.active_profile?'Reload':'Switch model'):'Start model';$('question').placeholder=busy?'Cosmos is working with your stars…':ready?'Ask anything, or say “remember that…”':libraryConnected?'Say “remember that…” to save a memory':'Select a model above to start chatting';$('ask-note').disabled=!ready||screenMode;screenControls()}
+function showModels(result){const previous=modelState;modelState=result;if(!$('model').options.length||$('model').options[0].value==='Loading profiles…'){$('model').replaceChildren(...result.profiles.map(p=>{const o=document.createElement('option');o.value=p.id;o.textContent=p.label;return o}));$('model').value=result.active_profile}
+ if(lastProfile!==null&&result.state==='ready'&&(lastProfile!==result.active_profile||previous?.state!=='ready')){$('messages').replaceChildren();$('conversation').hidden=true;sources.clear();refreshGraph()}if(result.state==='ready')lastProfile=result.active_profile;
+ const loading=['starting','switching'].includes(result.state);if(loading){if(!loadingSince)loadingSince=Date.now();const seconds=Math.floor((Date.now()-loadingSince)/1000);status(`${result.state==='switching'?'Switching models':'Starting local model'} · ${seconds}s. The model may be downloading from Hugging Face or loading into memory. Large models can take several minutes; chat will unlock when ready.`)}else{loadingSince=null;if(result.error)status(result.error,true);else if(result.state==='ready')status('');else status('Choose a profile and select Start model. First use may download model files from Hugging Face.')}
+ controls();
+}
+async function pollModels(){try{showModels(await api('/models'))}catch(error){modelState=null;status('Cosmos is unavailable. Start server.py and reload this page.',true);controls()}finally{setTimeout(pollModels,1500)}}
+$('model').onchange=controls;$('start-model').onclick=async()=>{selecting=true;controls();try{const result=await api('/models/select',{profile:$('model').value});showModels(result)}catch(error){status(error.message,true)}finally{selecting=false;controls()}};
+$('stop-model').onclick=async()=>{selecting=true;controls();try{showModels(await api('/models/stop',{}));$('messages').replaceChildren();$('conversation').hidden=true;sources.clear();refreshGraph()}catch(error){status(error.message,true)}finally{selecting=false;controls()}};
+function prepareQuestion(text){$('question').value=text;if(!modelState||modelState.state!=='ready')status('Start a local model above; your question is saved here.');else $('question').focus()}
+$('ask-note').onclick=()=>{const node=findStar(selected);if(node)prepareQuestion(`What do my stars say about ${node.label}?`)};
+const examples=data.nodes.some(n=>n.label==='Cash Flow Plan')?[['Cash reserves','What reserve does Cash Flow Plan require, and when should purchases be paused?'],['Reorder points','When should we reorder beans and milk according to Inventory Reorder Points?'],['Team training','How does Staff Training prepare a new barista for Opening Checklist?']]:data.nodes.slice(0,3).map(n=>[n.label,`What do my stars say about ${n.label}?`]);
+examples.forEach(([label,question])=>$('suggestions').append(button(label,()=>prepareQuestion(question))));
+for(const panel of ['conversation','composer']){
+ const toggle=$(panel+'-toggle');
+ toggle.onclick=()=>setWorkspacePanel(panel,toggle.getAttribute('aria-pressed')!=='true');
+}
+async function submitQuestion(question){
+ question=question.trim();if(!question)return;
+ const seeing=screenMode,shareRevision=screenRevision;
+ const remembering=!seeing&&/^remember\s+that\b/i.test(question);
+ if(remembering)clicked=true;
+ if(question.length>4000){$('question').value=question;const message=remembering?'I could not save that memory; please keep it under 4000 characters.':'Keep your question to 4000 characters. Edit it and send again.';voiceMessage(message);if(remembering){stopSpeaking();speak(message)}return}
+ if(!seeing&&!remembering&&(modelState?.state!=='ready'||selecting)){$('question').value=question;voiceMessage('Start a local model first; your question is saved here.');return}
+ if(busy){if(seeing){voiceMessage('Wait for this answer, then ask again to capture a fresh screen frame.');return}chatQueue.push(question);voiceMessage('Your next question is queued.');return}
+ if(remembering)stopSpeaking();
+ const revision=speechRevision;
+ let saved=false;
+ busy=true;controls();voiceStatus();$('question').value='';$('conversation').hidden=false;$('suggestions').hidden=true;const q=document.createElement('p');q.className='message question';q.textContent=question;const a=document.createElement('p');a.className='message loading-answer';a.textContent='Reading your stars…';$('messages').append(q,a);$('transcript').scrollTop=$('transcript').scrollHeight;
+ try{
+  if(remembering){
+   a.textContent='Saving your new star…';
+   const result=await api('/remember',{text:question});saved=true;
+   await birthStar(result);
+   a.className='message';a.textContent=result.answer;voiceMessage('');speak(result.answer);return;
+  }
+  let result;
+  if(seeing){
+   if(!screenLive())throw Error(SCREEN_ENDED);
+   if(modelState?.state!=='ready'||selecting)throw Error('Start a local model first; screen analysis needs a ready vision-capable model.');
+   if(modelState.vision==='unsupported')throw Error(VISION_REQUIRED);
+   screenHelp('Screen questions stay local. Each Ask sends one new frame; nothing is captured between questions.');voiceMessage('');
+   a.textContent='Reading the current screen frame locally…';
+   const frame=await captureScreenFrame();
+   if(shareRevision!==screenRevision||!screenLive())throw Error(SCREEN_ENDED);
+   screenRequest=new AbortController();
+   try{result=await api('/see',{question,image:frame.image},{headers:{'X-Captured-At':frame.capturedAt},signal:screenRequest.signal})}
+   finally{frame.image='';screenRequest=null}
+   if(shareRevision!==screenRevision||!screenLive())throw Error(SCREEN_ENDED);
+  }else result=await api('/chat',{question});
+  a.className='message';a.textContent=result.answer;
+  const ids=result.intent==='notes'&&Array.isArray(result.nodes)?[...new Set(result.nodes.filter(id=>Number.isInteger(id)&&findStar(id)))]:[];
+  if(revision===speechRevision){
+   showAnswerSources(result.intent,ids);
+   // Only the answer goes to speech; note excerpts stay in the side panel.
+   const sentences=[...new Intl.Segmenter('en',{granularity:'sentence'}).segment(result.answer)].slice(0,2).map(s=>s.segment).join('').trim();
+   const words=sentences.split(/\s+/);speak(words.length>60?words.slice(0,60).join(' ')+'…':sentences,seeing);
+  }
+  if(ids.length){const chips=document.createElement('div');chips.className='source-list';ids.forEach(id=>{const node=findStar(id);const el=button('',()=>openNote(node));el.append(dot(starColor(node)),document.createTextNode(node.label));chips.append(el)});$('messages').append(chips)}
+ }
+ catch(error){
+  const message=seeing&&(shareRevision!==screenRevision||!screenLive())?SCREEN_ENDED:remembering?(saved?'Your memory is saved and searchable, but I could not show its new star.':error instanceof TypeError||['TimeoutError','AbortError','SyntaxError'].includes(error.name)?'I could not confirm that memory was saved; please check your captures before retrying.':`I could not remember that: ${error.message}`):error.message;
+  a.className='message';a.textContent=message;status(message,true);
+  if(seeing){screenHelp(message,true);if(message===VISION_REQUIRED&&modelState){modelState.vision='unsupported';const profile=modelState.profiles.find(p=>p.id===modelState.active_profile);if(profile)profile.vision='unsupported'}}
+  if(remembering){voiceMessage(message);speak(message)}
+  if(!saved&&!$('question').value&&!voiceTurn&&!chatQueue.length)$('question').value=question;
+ }finally{busy=false;controls();voiceStatus();while($('messages').children.length>12)$('messages').firstChild.remove();$('transcript').scrollTop=$('transcript').scrollHeight;if(!$('question').disabled)$('question').focus();if(chatQueue.length){voiceMessage('');submitQuestion(chatQueue.shift())}}
+}
+$('chat-form').addEventListener('submit',event=>{
+ event.preventDefault();if(busy)return;
+ const question=$('question').value;
+ cancelVoiceTurn();submitQuestion(question);
+});
+initializeLibrary();pollModels();
+</script>
+</body>
+</html>

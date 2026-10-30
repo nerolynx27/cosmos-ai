@@ -1,0 +1,108 @@
+{
+  "base_url": "http://127.0.0.1:8080/v1",
+  "active_profile": "qwen36-normal",
+  "profiles": {
+    "qwen36-normal": {
+      "label": "Qwen 3.6 — Normal",
+      "model_source": "unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_XL",
+      "args": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8080",
+        "--temp",
+        "1.0",
+        "--top-p",
+        "0.95",
+        "--top-k",
+        "20",
+        "--min-p",
+        "0.00"
+      ]
+    },
+    "qwen36-coder": {
+      "label": "Qwen 3.6 — Coder",
+      "model_source": "unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_XL",
+      "args": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8080",
+        "--temp",
+        "0.6",
+        "--top-p",
+        "0.95",
+        "--top-k",
+        "20",
+        "--min-p",
+        "0.00"
+      ]
+    },
+    "qwen36-uncensored": {
+      "label": "Qwen 3.6 — Uncensored",
+      "model_source": "HauhauCS/Qwen3.6-35B-A3B-Uncensored-HauhauCS-Aggressive:Q4_K_M",
+      "args": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8080",
+        "--jinja",
+        "--ctx-size",
+        "131072",
+        "--temp",
+        "1.0",
+        "--top-p",
+        "0.95",
+        "--top-k",
+        "20",
+        "--min-p",
+        "0",
+        "--presence-penalty",
+        "1.5"
+      ]
+    },
+    "qwen3-coder": {
+      "label": "Qwen 3 Coder",
+      "model_source": "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:UD-Q5_K_XL",
+      "args": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8080",
+        "--temp",
+        "0.7",
+        "--top-p",
+        "0.8",
+        "--top-k",
+        "20",
+        "--min-p",
+        "0.00",
+        "--repeat-penalty",
+        "1.05",
+        "--ctx-size",
+        "65536"
+      ]
+    },
+    "minicpm5-2b": {
+      "label": "MiniCPM5 2B",
+      "model_source": "openbmb/MiniCPM5-2B-GGUF:Q4_K_M",
+      "args": [
+        "--host",
+        "127.0.0.1",
+        "--port",
+        "8080",
+        "-ngl",
+        "99",
+        "-c",
+        "8192",
+        "--jinja",
+        "--temp",
+        "1.0",
+        "--top-p",
+        "0.95",
+        "--min-p",
+        "0.00"
+      ]
+    }
+  }
+}
