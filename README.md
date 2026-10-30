@@ -9,6 +9,26 @@ Cosmos turns your files into **stars** and your folders into **constellations**.
 
 Built with Python, plain JavaScript, and llama.cpp. No frontend build step or cloud AI key is required.
 
+## Screenshots
+
+These screenshots use the fictional Kopi Kecil demo library. Your installation starts with an empty library; the demo notes are not included.
+
+### Desktop workspace
+
+Explore your files as stars and folders as constellations.
+
+![Cosmos AI desktop workspace with a connected graph and searchable library](docs/screenshots/workspace-desktop.png)
+
+### Star details
+
+Open a star to read its note and explore connected files.
+
+![Cosmos AI displaying a fictional Cash Flow Plan note and its connected stars](docs/screenshots/star-detail.png)
+
+### Mobile workspace
+
+<img src="docs/screenshots/workspace-mobile.png" width="280" alt="Cosmos AI mobile workspace with collapsible library and conversation controls">
+
 ## Features
 
 - **Explore your galaxy.** Browse a 3D graph, search your library, and open individual stars.
@@ -120,7 +140,7 @@ Screen questions use a browser-shared screen frame. A compatible vision model an
 
 The included launcher targets Windows. Fresh-machine macOS and Linux support has not been verified.
 
-Generated graph exports, notes, caches, and model files are local runtime data. Do not commit private library content or generated exports. This source package intentionally includes no sample notes, screenshots, or model weights.
+Generated graph exports, notes, caches, and model files are local runtime data. Do not commit private library content or generated exports. This source package includes screenshots of fictional demo content, but no sample notes or model weights.
 
 ## License
 
